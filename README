@@ -1,0 +1,68 @@
+#####################################################################################################################
+#                                            Cache486 - Simulador de Cache
+#####################################################################################################################
+#
+#   1.Introduçao
+#   2.Implementação
+#   3.Execução
+#   4.Resultados e Conclusão
+#
+# @autor André G. Peil  
+# @autor Glauco Roberto M. dos Santos
+# @github  git@github.com:glaucomunsberg/Cache486.git
+# @version 0.1
+#
+#####################################################################################################################
+#   1.Introduçao
+#####################################################################################################################
+#
+#
+#####################################################################################################################
+#   2.Implementação
+#####################################################################################################################
+#
+#
+#####################################################################################################################
+#   3.Execução
+#####################################################################################################################
+#
+#       Através do repositório no GitHub ( glaucomunsberg/Cache486) é possível obter os arquivos individuais para a 
+#   execução do simulador de cache ou até mesmo uma versão mais recente dos arquivos listado abaixo.
+#   Podendo inclusive baixar e executar os arquivos da pasta 'exemplosDeSimulacao'.
+#
+#   3.1 Configuração Mínima
+#       * Java 6
+#       * 256 RAM
+#       * Arquivos Mínima
+#            * Simulador.java
+#            * Cache.java
+#            * Celula.java
+#            * exemploBinario*.bin
+#
+#      3.1.2 Compilar
+#           Para a compilação, se opta por executar diretamente a compilação da classe Simulador que resolve as
+#       compilações dependentes que no caso são Cache e Celula.
+#           Para compilar no terminal:
+#
+#               $ javac Grafo.java
+#
+#      3.1.3 Parametros
+#           A simulação precisa que hava algumas informações de como será a estrutura da cache simulada. Vejamos
+#       alguns dos parametros necessários:
+#           [paramNSets]    - Número de sets de cache. Default 1;
+#           [paramBSize]    - tamanho de cada set. Default 32;
+#           [paramAssoc]    - Número associativo, sendo entre 1 e [paramNSets]. Default 1;
+#           [nomeArquivoBin]- Arquivo binário contendo n endereços de memória em 32bits;
+#
+#      3.1.4 Execução do Simulaodor
+#           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
+#       simular:
+#
+#               $ java Simulador [paramNSets] [paramBSize] [paramAssoc] < [nomeArquivoBin]
+#
+#####################################################################################################################
+# 4.Resultados e Conclusão
+#####################################################################################################################
+#
+#
+#####################################################################################################################
