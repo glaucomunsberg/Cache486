@@ -52,17 +52,54 @@
 #           [paramNSets]    - Número de sets de cache. Default 1;
 #           [paramBSize]    - tamanho de cada set. Default 32;
 #           [paramAssoc]    - Número associativo, sendo entre 1 e [paramNSets]. Default 1;
-#           [nomeArquivoBin]- Arquivo binário contendo n endereços de memória em 32bits;
+#           [nomeArquivoBin]- Nome do arquivo binário contendo n endereços de memória em 32bits;
 #
 #      3.1.4 Execução do Simulaodor
 #           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
 #       simular:
 #
-#               $ java Simulador [paramNSets] [paramBSize] [paramAssoc] < [nomeArquivoBin]
+#               $ java Simulador [paramNSets] [paramBSize] [paramAssoc] [nomeArquivoBin]
 #
 #####################################################################################################################
 # 4.Resultados e Conclusão
 #####################################################################################################################
+#
+#
+#
+#
+#
+#
+#
+#####################################################################################################################
+# 5.Error and Helpers
+#####################################################################################################################
+#
+#       Veja abaixo algum dos códigos e possíveis soluções para cada um dos erros apontados pelo programa:
+#   Error 5.000
+#       Erro geral, procure analisar o código;
+#
+#   Error 5.001
+#       Esse erro é originado quando não se passa o número correto de parametros. Número de parametros insuficientes.
+#           Leia o 'README' ítem 3.1.4 para maiores informações;
+#
+#   Error 5.002
+#       Algum parametro está errado.
+#           Leia o 'README' ítem 3.1.3 para maiores informações sobre formatação de dados;
+#
+#   Error 5.100
+#       Erro ao cria uma Cache.
+#           Certifique-se se passar os parametros com valores válidos para o nº assoc e nde sets.
+#
+#   Error 5.900
+#       Erro na abertura do arquivo binário.
+#           O nome do arquivo pode estar errado, certifique-se que passou o nome correto como parametro,para maiores
+#           informações leia o 'README' ítem 3.1.3;
+#
+#   Error 5.901
+#       Erro na leitura do arquivo binário.
+#           O programa foi projeto para ler apenas arquivos binários com tuplas de 32bits, ou seja, deve haver
+#           (n*32)bits dentro do arquivo.
+#
 #
 #
 #####################################################################################################################
