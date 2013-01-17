@@ -1,10 +1,14 @@
+
 public class Cache {
 
     Celula celulas[];
     Cache next;
-    int mBits_offset;
-    int mBits_indice;
-    int mBits_tag;
+    private int mBits_offset;
+    private int mBits_indice;
+    private int mBits_tag;
+    private int indice;
+    private int tag;
+    private int endereco;
     /**
      *  Construtor de uma cache
      * @param int nsets númerode celulas de memória
@@ -72,6 +76,19 @@ public class Cache {
      */
     public int getmBits_tag(){
         return mBits_tag;
+    }
+    
+    public void manipula(int enderecoRecebido){
+        this.endereco = enderecoRecebido;
+        System.out.println(this.endereco);
+        Double aa = Math.pow(2,this.getmBits_indice())-1;
+        this.indice = ( endereco >>> this.getmBits_offset()  );
+        this.indice = ( this.indice & aa.byteValue() );
+        System.out.println("Indice:"+Integer.toBinaryString(indice) +"\n");
+        
+        this.tag = ( this.endereco >>> (byte)(this.mBits_offset + this.mBits_indice) );
+        
+        System.out.println("Tag:"+Integer.toBinaryString(this.tag) +"\n");
     }
 
 }

@@ -2,20 +2,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Scanner;
-import java.math.*;
 
 public class Simulador {
 
-    Cache l1;
-    Scanner leitor;
+    Cache l1, l2;
     public static void main(String[] args) {
 
-        if(args.length == 4){
+        if(args.length == 3){
 
             try {
                 Simulador main = new Simulador();
-                main.iniciar(args[0] , args[1], args[2], args[3]);
+                main.iniciar(args[0] , args[1], args[2]);
                 main.finalizar();
             
             } catch (Exception e){
@@ -29,29 +26,57 @@ public class Simulador {
 
     }
 
-    public void iniciar(String nsets, String bsize, String assoc, String nomeArquivoBin){
-        int paramNSets, paramBSize, paramAssoc;
-        paramNSets = 1;
-        paramBSize = 32;
-        paramAssoc = 1;
+    public void iniciar(String cache1, String cache2, String nomeArquivoBin){
+        
+        int nSetsCache1, bSizeCache1, associacaoCache1;
+        int nSetsCache2, bSizeCache2, associacaoCache2;
+        String[] configCache1, configCache2;
+        
+        nSetsCache1 = nSetsCache2 = 1;
+        bSizeCache1 = bSizeCache2 =32;
+        associacaoCache1 = associacaoCache2 = 1024;
+        
         
         /**
          * Faz a conversão de String para int
          */
         try{
-            paramNSets = Integer.parseInt(nsets);
-            if(paramNSets < 1){
-                paramNSets = 1;  
+            
+            /**
+             * Recebe os parametros juntos na string cache1 = "<nsets_L1>:<bsize_L1>:<assoc_L1>"
+             */
+            configCache1 = cache1.split(":");
+            configCache2 = cache2.split(":");
+            
+            nSetsCache1 = Integer.parseInt(configCache1[0]);
+            if(nSetsCache1 < 1){
+                nSetsCache1 = 1;  
             }
                 
-            paramBSize = Integer.parseInt(bsize);
-            if(paramBSize < 1){
-                paramBSize = 32;  
+            bSizeCache1 = Integer.parseInt(configCache1[1]);
+            if(bSizeCache1 < 1){
+                bSizeCache1 = 4;  
             }
                 
-            paramAssoc = Integer.parseInt(assoc);
-            if(paramAssoc < 1){
-                paramAssoc = 1;  
+            associacaoCache1 = Integer.parseInt(configCache1[2]);
+            if(associacaoCache1 < 1 || associacaoCache1 > nSetsCache1){
+                associacaoCache1 = 1024;  
+            }
+            
+            
+            nSetsCache2 = Integer.parseInt(configCache2[0]);
+            if(nSetsCache2 < 1){
+                nSetsCache2 = 1;  
+            }
+            
+            bSizeCache2 = Integer.parseInt(configCache2[1]);
+            if(bSizeCache2 < 1){
+                bSizeCache2 = 4;  
+            }
+            
+            associacaoCache2 = Integer.parseInt(configCache2[2]);
+            if(associacaoCache2 < 1 || associacaoCache2 > nSetsCache2){
+                associacaoCache2 = 1024;  
             }
             
             
@@ -62,20 +87,21 @@ public class Simulador {
         /**
          * Cria as caches
          */
-        l1 = new Cache(paramNSets,paramBSize,paramAssoc, null);
-        System.out.println("mBits_offset: "+l1.getmBits_offset()+"mBits_indice: "+l1.mBits_indice+"mBits_tag: "+l1.getmBits_tag());
         
-        int indice, tag, endereco;
+        l2 = new Cache(nSetsCache2,bSizeCache2,associacaoCache2,null);
+        l1 = new Cache(nSetsCache1,bSizeCache1,associacaoCache1, l2);
+        
+        System.out.println("Cache 1:\n mBits_offset: "+l1.getmBits_offset()+"mBits_indice: "+l1.getmBits_indice()+"mBits_tag: "+l1.getmBits_tag()+"\nCache 2:\n mBits_offset: "+l2.getmBits_offset()+"mBits_indice: "+l2.getmBits_indice()+"mBits_tag: "+l2.getmBits_tag());
+        
+        
+        int enderecoEmInteger;
         
         
         ArquivoBinario arquivo = new ArquivoBinario(nomeArquivoBin);
         while(arquivo.temProximaPalavra32()){
             System.out.println("Endereço de Memória: "+arquivo.getProximaPalavra32String());
-            endereco = arquivo.getProximaPalavra32Bits();
-            System.out.println(endereco);
-            
-            //indice = ( l1.mBits_offset >> endereco );
-            //System.out.println(Integer.toBinaryString(indice));
+            enderecoEmInteger = arquivo.getProximaPalavra32Bits();
+            l1.manipula(enderecoEmInteger);
             
         }
 
@@ -125,12 +151,17 @@ class ArquivoBinario{
             return false;
         }
         try{
-            if( (conteudoLido = (byte) arquivoStream.read() ) != -1 ){
-                return true;
-           }else{
-                terminouArquivo = true;
-                return false;
+            boolean voltaOQue=false;
+            for(int a=0; a <4;a++){
+                if( (conteudoLido = (byte) arquivoStream.read() ) != -1 ){
+                    voltaOQue = true;
+                }else{
+                    terminouArquivo = true;
+                    voltaOQue = false;
+                }
             }
+            return voltaOQue;
+            
         }catch(IOException ex){
             System.out.println("Error 5.901! Leia o 'README'"+"/nVeja o erro: "+ex.getMessage() );
             return false;
