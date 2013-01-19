@@ -16,7 +16,7 @@ public class Simulador {
                 main.finalizar();
             
             } catch (Exception e){
-                System.out.println("Erro 5.000! Leia o 'README'"+e.toString());
+                System.out.println("Erro 5.000! Leia o 'README'");
             }
 
         } else {
@@ -88,21 +88,22 @@ public class Simulador {
          * Cria as caches
          */
         
-        l2 = new Cache(nSetsCache2,bSizeCache2,associacaoCache2,null);
-        l1 = new Cache(nSetsCache1,bSizeCache1,associacaoCache1, l2);
-        
-        System.out.println("Cache 1:\n mBits_offset: "+l1.getmBits_offset()+"mBits_indice: "+l1.getmBits_indice()+"mBits_tag: "+l1.getmBits_tag()+"\nCache 2:\n mBits_offset: "+l2.getmBits_offset()+"mBits_indice: "+l2.getmBits_indice()+"mBits_tag: "+l2.getmBits_tag());
-        
+        l2 = new Cache(nSetsCache2,bSizeCache2,associacaoCache2,"random");
+        l1 = new Cache(nSetsCache1,bSizeCache1,associacaoCache1, "random", l2);
         
         int enderecoEmInteger;
-        
-        
+        boolean missHit;
         ArquivoBinario arquivo = new ArquivoBinario(nomeArquivoBin);
         while(arquivo.temProximaPalavra32()){
-            System.out.println("Endereço de Memória: "+arquivo.getProximaPalavra32String());
-            enderecoEmInteger = arquivo.getProximaPalavra32Bits();
-            l1.manipula(enderecoEmInteger);
             
+            enderecoEmInteger = arquivo.getProximaPalavra32Bits();
+            
+            missHit = l1.manipula(enderecoEmInteger);
+            if(missHit){
+                System.out.println("Hit!");
+            }else{
+                System.out.println("Miss!");
+            }
         }
 
     }

@@ -54,12 +54,18 @@
 #           [associacaoCache]   - Número associativo, sendo entre 1 e [nSetsCache]. Default 1;
 #           [nomeArquivoBin]    - Nome do arquivo binário contendo n endereços de memória em 32bits;
 #
-#      3.1.4 Execução do Simulaodor
+#      3.1.4 Execução do Simulador
 #           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
 #       simular:
 #
-#               $ java Simulador "nSetsCache1:bSizeCache1:associacaoCache1" "nSetsCache2:bSizeCache2:associacaoCache2" "nomeArquivoBin"
+#               $ java Simulador "nSets1:bSize1:associacao1" "nSets2:bSize2:associacao2" "nomeArquivoBin"
 #
+#     3.1.5 Exemplo:
+#
+#           Abaixo está os comandos para uma cache de 1024 índices, com 4bytes (32bits) de tamanho da palavra e
+#       uma associtividade 1 (Mapeamento Direto).
+#
+#               $ java Simulador "1024:4:1" "1024:4:1" "exemploBinario.dat"
 #####################################################################################################################
 # 4.Resultados e Conclusão
 #####################################################################################################################
@@ -87,6 +93,10 @@
 #           Leia o 'README' ítem 3.1.3 para maiores informações sobre formatação de dados;
 #
 #   Error 5.100
+#       Erro ao cria uma Cache.
+#           Certifique-se se passar os parametros com valores válidos para o nº assoc e nde sets.
+#
+#   Error 5.101
 #       Erro ao cria uma Cache.
 #           Certifique-se se passar os parametros com valores válidos para o nº assoc e nde sets.
 #
