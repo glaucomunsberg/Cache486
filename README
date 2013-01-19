@@ -56,9 +56,17 @@
 #
 #      3.1.4 Execução do Simulador
 #           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
-#       simular:
+#       Simular:
 #
+<<<<<<< HEAD
 #               $ java Simulador "nSets1:bSize1:associacao1" "nSets2:bSize2:associacao2" "nomeArquivoBin"
+=======
+#               $ java Simulador "nSetsCache1:bSizeCache1:associacaoCache1" "nSetsCache2:bSizeCache2:associacaoCache2" "nomeArquivoBin"
+#       
+#       Exemplo:        
+#
+#               $ java Simulador "1024:4:1" "1024:4:1" "teste.bin"
+>>>>>>> 9104672eb9cef19c7dd3a1b962a63fcc81ca669c
 #
 #     3.1.5 Exemplo:
 #
