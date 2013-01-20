@@ -10,7 +10,7 @@ Objetivo: Criar um simulador de Cache que permita:
     ✓ Modos de cache configurável  
     ✓ Identificar o número de Hit
     ✓ Identificar o número de Miss
-    ✓ Calcular o Mis Hate e Hit Hate
+    ✓ Calcular o Mis Rate e Hit Rate
 
 Obs.: Para maiores  informações sobre  formatação de  I/O da cache  leia 
  'README'.
