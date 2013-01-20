@@ -9,6 +9,9 @@ public class Cache {
     private int indice;
     private int tag;
     private int endereco;
+    private int num_enderecos_processados;
+    private int num_hits;
+    private int num_misses;
     private String politicaAplicada;
     private Random gerar;
     /**
@@ -21,13 +24,19 @@ public class Cache {
     public Cache (int nsets, int bsize, int assoc, String politica){
         
         try{
+            
             celulas = new Celula[nsets];
+            
             for(int a=0; a < nsets; a++){
                 celulas[a] = new Celula(assoc);
             }
+            
         }catch(Exception e){
+            
             System.out.println("Error 5.100! Leia o 'README'"+e.toString());
+            
         }
+        num_enderecos_processados = num_hits = num_misses = 0;
         mBits_offset = (int)(Math.log(bsize) / Math.log(2));
         mBits_indice = (int)(Math.log(nsets) / Math.log(2));
         mBits_tag = 32 -  mBits_offset - mBits_indice;
@@ -84,6 +93,7 @@ public class Cache {
     public boolean manipula(int enderecoRecebido){
        
         this.prepararEndereco(enderecoRecebido);
+        this.num_enderecos_processados++;
         boolean resultadoDaProcura = acharEnderecoNaCache();
         
         
@@ -93,16 +103,27 @@ public class Cache {
          */
         if(!resultadoDaProcura){
             if( "random".equals(politicaAplicada) ){
+                
                 this.politicaRandomica();
+                
             }else{
             if( "lru".equals(politicaAplicada) ){
+                
                     this.politicaLRU();
+                    
                 }else{
-                this.politicaRandomica();
-            }
+                
+                    this.politicaRandomica();
+                    
+                }
             }
         }
         
+        if(resultadoDaProcura){
+            this.num_hits+=1;
+        }else{
+            this.num_misses+=1;
+        }
         
         
        return resultadoDaProcura;
@@ -115,26 +136,26 @@ public class Cache {
      * @return 
      */
     private boolean acharEnderecoNaCache(){
-        boolean achou = false;
+        boolean achouEndereco = false;
         
         for(int n_assoc=0; n_assoc < celulas[0].getAssociatividadeLength(); n_assoc++ ){
             if( celulas[this.indice].getValidade(n_assoc)){
                 if(celulas[this.indice].getTag(n_assoc) == this.tag){
-                    achou = true;
+                    achouEndereco = true;
                     break;
                 }
             }
         }
         
-        if(achou){
-            return achou;
+        if(achouEndereco){
+            return achouEndereco;
         }else{
             if(this.nivelInferior != null){
-                achou = this.nivelInferior.manipula(endereco);
+                achouEndereco = this.nivelInferior.manipula(endereco);
             }
             
         }
-        return achou;
+        return achouEndereco;
     }
     
     /**
@@ -143,14 +164,14 @@ public class Cache {
      */
    private void prepararEndereco(int enderecoRecebido){
        try{
-           this.endereco = enderecoRecebido;
+            this.endereco = enderecoRecebido;
             Double aa = Math.pow(2,this.getmBits_indice())-1;
             this.indice = ( endereco >>> this.getmBits_offset()  );
             this.indice = ( this.indice & aa.byteValue() );
             this.tag = ( this.endereco >>> (byte)(this.mBits_offset + this.mBits_indice) );
-                    System.out.println("Endereço:"+Integer.toBinaryString(enderecoRecebido) +"\n  Indice:"+Integer.toBinaryString(indice) +"\n  Tag:"+Integer.toBinaryString(this.tag) +"\n");
-       }catch(Exception e){
-           System.out.println("alguma coisa");
+            System.out.println("Endereço:"+Integer.toBinaryString(enderecoRecebido) +"\n  Indice:"+Integer.toBinaryString(indice) +"\n  Tag:"+Integer.toBinaryString(this.tag) +"\n");
+        }catch(Exception e){
+            System.out.println("Erro 5.101! Leia o 'README'");
         }
         
         
@@ -162,15 +183,20 @@ public class Cache {
      *  das suas posições associativas
      */
     private void politicaRandomica(){
-        int n_random_assoc = celulas[0].getAssociatividadeLength();
-        if( n_random_assoc != 1){
-            n_random_assoc = gerar.nextInt( celulas[0].getAssociatividadeLength()-1 );
+        int num_random_assoc = celulas[0].getAssociatividadeLength();
+        if( num_random_assoc != 1){
+            num_random_assoc = gerar.nextInt( celulas[0].getAssociatividadeLength()-1 );
         }else{
-            n_random_assoc =0;
+            num_random_assoc = 0;
         }
         
-        celulas[this.indice].setValido(n_random_assoc);
-        celulas[this.indice].setTag(n_random_assoc, this.tag);
+        try{
+            celulas[this.indice].setValido(num_random_assoc);
+            celulas[this.indice].setTag(num_random_assoc, this.tag);            
+        }catch(Exception e){
+            System.out.println("Erro 5.102! Leia o 'README'");
+        }
+
     }
     
     /**
@@ -181,4 +207,23 @@ public class Cache {
        System.out.println("\nMiss\nPolitica não implementada");
 
    }
+   
+   public String gerarRelatorio(){
+       String retorno = "";
+        if(this.nivelInferior != null){
+            retorno = "\nL2\n"+this.nivelInferior.gerarRelatorio();
+        }
+        
+        double missRatio, hitRatio;
+        try{
+            missRatio = (num_misses * 100) / this.num_enderecos_processados;
+            hitRatio  = (num_hits * 100) / this.num_enderecos_processados;
+       }catch(Exception e){
+            missRatio = 0.0;
+            hitRatio  = 0.0;
+       }
+       return String.format("Total Endereços: %d\nTotal Hits: %d\nTotal Misses: %d\nHit Ratio: %.1f \nMiss Ratio: %.1f\n============"+retorno, this.num_enderecos_processados, this.num_hits, this.num_misses, hitRatio, missRatio);
+   }
+   
+   
 }

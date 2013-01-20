@@ -49,31 +49,23 @@
 #      3.1.3 Parametros
 #           A simulação precisa que hava algumas informações de como será a estrutura da cache simulada. Vejamos
 #       alguns dos parametros necessários:
-#           [nSetsCache]        - Número de conjuntos na Cache. Default 1024;
-#           [bSizeCache]        - tamanho de cada bloco Default 4bytes;
-#           [associacaoCache]   - Número associativo, sendo entre 1 e [nSetsCache]. Default 1;
+#           [nSets]             - Número de conjuntos na Cache. Default 1024;
+#           [bSize]             - tamanho de cada bloco Default 4bytes;
+#           [associatividade1]  - Número associativo, sendo entre 1 e [nSetsCache]. Default 1;
 #           [nomeArquivoBin]    - Nome do arquivo binário contendo n endereços de memória em 32bits;
 #
 #      3.1.4 Execução do Simulador
 #           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
 #       Simular:
 #
-<<<<<<< HEAD
-#               $ java Simulador "nSets1:bSize1:associacao1" "nSets2:bSize2:associacao2" "nomeArquivoBin"
-=======
-#               $ java Simulador "nSetsCache1:bSizeCache1:associacaoCache1" "nSetsCache2:bSizeCache2:associacaoCache2" "nomeArquivoBin"
-#       
-#       Exemplo:        
-#
-#               $ java Simulador "1024:4:1" "1024:4:1" "teste.bin"
->>>>>>> 9104672eb9cef19c7dd3a1b962a63fcc81ca669c
-#
+#               $ java Simulador "nSets1:bSize1:associatividade1" "nSetsCache2:bSize2:associatividade2" "nomeArquivoBin"
 #     3.1.5 Exemplo:
 #
 #           Abaixo está os comandos para uma cache de 1024 índices, com 4bytes (32bits) de tamanho da palavra e
 #       uma associtividade 1 (Mapeamento Direto).
 #
 #               $ java Simulador "1024:4:1" "1024:4:1" "exemploBinario.dat"
+#
 #####################################################################################################################
 # 4.Resultados e Conclusão
 #####################################################################################################################
@@ -105,8 +97,13 @@
 #           Certifique-se se passar os parametros com valores válidos para o nº assoc e nde sets.
 #
 #   Error 5.101
-#       Erro ao cria uma Cache.
-#           Certifique-se se passar os parametros com valores válidos para o nº assoc e nde sets.
+#       Erro ao manipular o endereço.
+#           Certifique-se de que o endereço contém 32bits.
+#
+#   Error 5.102
+#       Erro na política Randômica.
+#           A política Randômica encontrou algum problema ligado a sua consistência. Certifique-se de passar uma
+#           associatividade válida.
 #
 #   Error 5.900
 #       Erro na abertura do arquivo binário.

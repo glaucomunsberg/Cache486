@@ -17,6 +17,7 @@ public class Simulador {
             
             } catch (Exception e){
                 System.out.println("Erro 5.000! Leia o 'README'");
+                e.printStackTrace();
             }
 
         } else {
@@ -108,7 +109,7 @@ public class Simulador {
 
     }
     public void finalizar(){
-        System.out.println("Execução finalizada com sucesso!");
+        System.out.println("\nRelatório Final:\nL1\n"+this.l1.gerarRelatorio());
     }
 
 }

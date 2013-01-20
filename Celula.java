@@ -2,7 +2,6 @@ public class Celula {
 
     private boolean val[];
     private int tag[];
-    private int informacao[];
 
     /**
      * Construtor que começa apenas com o
@@ -11,7 +10,6 @@ public class Celula {
     public Celula(){
         val = new boolean[1];
         tag = new int[1];
-        informacao = new int[1];
     }
     
     /**
@@ -21,7 +19,6 @@ public class Celula {
     public Celula(int assoc){
         val = new boolean[assoc];
         tag = new int[assoc];
-        informacao = new int[assoc];
         for(int a=0; a < val.length;a++){
             val[a] = false;
         }
