@@ -222,6 +222,7 @@ public class Cache {
 
     }
     
+    
     /**
      * Aplica a politica LRU da inserção na linha manipulada ( this.indice). 
      *  a celula (linha da cache) manipulada receberá o dado na mais antiga das inserções

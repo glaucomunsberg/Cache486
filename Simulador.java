@@ -206,5 +206,6 @@ class ArquivoBinario{
             return null;
         }
         return Integer.toBinaryString(conteudoLido);
+   
     }
 }
