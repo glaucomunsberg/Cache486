@@ -47,7 +47,7 @@ public class Cache {
         mBits_tag = 32 -  mBits_offset - mBits_indice;
         politicaAplicada = politica.toLowerCase();
         gerar = new Random();
-        System.out.println("mBits_offset: "+mBits_offset+" mBits_indice: "+mBits_indice+" mBits_tag: "+mBits_tag+" Política Usada:"+politicaAplicada);
+       // System.out.println("mBits_offset: "+mBits_offset+" mBits_indice: "+mBits_indice+" mBits_tag: "+mBits_tag+" Política Usada:"+politicaAplicada);
     }
     
     /**

@@ -101,12 +101,9 @@ public class Simulador {
         while(arquivo.temProximaPalavra32()){
             
             enderecoEmInteger = arquivo.getProximaPalavra32Bits();
+
             
-            entrada.nextLine();
-            entrada.nextLine();
-            //for (int r = 0; r < l1.historicoCache.size(); r++){
-            //    System.out.println(l1.historicoCache.get(r));
-            //}
+           // entrada.nextLine();
             missHit = l1.manipula(enderecoEmInteger);
             if(missHit){
                 System.out.println("Hit!");
@@ -114,9 +111,9 @@ public class Simulador {
                 System.out.println("Miss!");
             }
         }
-        for (int r = 0; r < l1.historicoCache.size(); r++){
-            System.out.println(l1.historicoCache.get(r));
-        }
+        //for (int r = 0; r < l1.historicoCache.size(); r++){
+        //    System.out.println(l1.historicoCache.get(r));
+        //}
         
 
     }
@@ -161,6 +158,8 @@ class ArquivoBinario{
      * @return true - se possúi | false - se não possúi
      */
     public boolean temProximaPalavra32(){
+        int temp = 0;
+        conteudoLido = 0;
         if(terminouArquivo){
             return false;
         }
@@ -169,15 +168,29 @@ class ArquivoBinario{
         // shiftar 8bits a cada passada do for
         
         try{
-            boolean voltaOQue=false;
-            for(int a=0; a < 4;a++){
-                if( (conteudoLido = (byte) arquivoStream.read() ) != -1 ){
+            boolean voltaOQue = false;
+            
+            for(int a = 0; a < 4; a++){
+                if( (temp = (int) arquivoStream.read() ) != -1 ){
+                   // System.out.println(temp);
+                    
+                    if (a != 3)//{
+                        conteudoLido = conteudoLido | temp;
+                        conteudoLido = (conteudoLido << 4);
+                    /*} else {
+                        temp = ~ temp;
+                        conteudoLido = conteudoLido | temp;
+                    }*/
                     voltaOQue = true;
                 }else{
                     terminouArquivo = true;
                     voltaOQue = false;
                 }
             }
+            conteudoLido = conteudoLido+temp;
+           // System.out.println("agora:"+Integer.toBinaryString(conteudoLido));
+            
+            
             return voltaOQue;
             
         }catch(IOException ex){
