@@ -1,6 +1,8 @@
 import java.util.Random;
+import java.util.LinkedList;
 public class Cache {
 
+    LinkedList<Integer> historicoCache = new LinkedList<Integer>();
     Celula celulas[];
     Cache nivelInferior;
     private int mBits_offset;
@@ -11,6 +13,9 @@ public class Cache {
     private int endereco;
     private int num_enderecos_processados;
     private int num_hits;
+    private int numMissCompulsorio;
+    private int numMissCapacidade;
+    private int numMissConflito;
     private int num_misses;
     private String politicaAplicada;
     private Random gerar;
@@ -91,7 +96,9 @@ public class Cache {
      * @return boolean resultadoDaProcura
      */
     public boolean manipula(int enderecoRecebido){
-       
+        
+        historicoCache.add(enderecoRecebido);
+
         this.prepararEndereco(enderecoRecebido);
         this.num_enderecos_processados++;
         boolean resultadoDaProcura = acharEnderecoNaCache();
@@ -164,11 +171,18 @@ public class Cache {
      */
    private void prepararEndereco(int enderecoRecebido){
        try{
-            this.endereco = enderecoRecebido;
+            if (enderecoRecebido < 0){
+                this.endereco = ~enderecoRecebido;
+                this.endereco-=this.endereco;
+                System.out.println(this.endereco);
+            } else{
+                this.endereco = enderecoRecebido;
+            }
+            
             Double aa = Math.pow(2,this.getmBits_indice())-1;
-            this.indice = ( endereco >>> this.getmBits_offset()  );
+            this.indice = ( endereco >> this.getmBits_offset());
             this.indice = ( this.indice & aa.byteValue() );
-            this.tag = ( this.endereco >>> (byte)(this.mBits_offset + this.mBits_indice) );
+            this.tag = ( this.endereco >> (byte)(this.mBits_offset + this.mBits_indice) );
             System.out.println("Endereço:"+Integer.toBinaryString(enderecoRecebido) +"\n  Indice:"+Integer.toBinaryString(indice) +"\n  Tag:"+Integer.toBinaryString(this.tag) +"\n");
         }catch(Exception e){
             System.out.println("Erro 5.101! Leia o 'README'");
@@ -191,6 +205,15 @@ public class Cache {
         }
         
         try{
+            System.out.println(this.celulas.length);
+            /*for(int i = 0; i < this.celulas.length; i++){
+                System.out.println(i +" "+celulas[i].getTag(0)+" "+celulas[i].getValidade(0));
+            
+            }*/
+            
+            
+            //if (celulas[this.indice])
+            
             celulas[this.indice].setValido(num_random_assoc);
             celulas[this.indice].setTag(num_random_assoc, this.tag);            
         }catch(Exception e){

@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 
 public class Simulador {
 
@@ -28,6 +29,8 @@ public class Simulador {
     }
 
     public void iniciar(String cache1, String cache2, String nomeArquivoBin){
+        
+        Scanner entrada = new Scanner(System.in);
         
         int nSetsCache1, bSizeCache1, associacaoCache1;
         int nSetsCache2, bSizeCache2, associacaoCache2;
@@ -99,6 +102,11 @@ public class Simulador {
             
             enderecoEmInteger = arquivo.getProximaPalavra32Bits();
             
+            entrada.nextLine();
+            entrada.nextLine();
+            //for (int r = 0; r < l1.historicoCache.size(); r++){
+            //    System.out.println(l1.historicoCache.get(r));
+            //}
             missHit = l1.manipula(enderecoEmInteger);
             if(missHit){
                 System.out.println("Hit!");
@@ -106,6 +114,10 @@ public class Simulador {
                 System.out.println("Miss!");
             }
         }
+        for (int r = 0; r < l1.historicoCache.size(); r++){
+            System.out.println(l1.historicoCache.get(r));
+        }
+        
 
     }
     public void finalizar(){
@@ -152,9 +164,13 @@ class ArquivoBinario{
         if(terminouArquivo){
             return false;
         }
+        
+        // mexer nisso aqui
+        // shiftar 8bits a cada passada do for
+        
         try{
             boolean voltaOQue=false;
-            for(int a=0; a <4;a++){
+            for(int a=0; a < 4;a++){
                 if( (conteudoLido = (byte) arquivoStream.read() ) != -1 ){
                     voltaOQue = true;
                 }else{
