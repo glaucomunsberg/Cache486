@@ -21,7 +21,7 @@ public class Celula {
         tag = new int[assoc];
         for(int a=0; a < val.length;a++){
             val[a] = false;
-   
+  
         }
     }
     

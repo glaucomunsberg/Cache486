@@ -219,7 +219,6 @@ public class Cache {
         }catch(Exception e){
             System.out.println("Erro 5.102! Leia o 'README'");
         }
-
     }
     
     
