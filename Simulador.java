@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Simulador {
@@ -32,7 +33,7 @@ public class Simulador {
 
     public void iniciar(String cache1, String cache2, String nomeArquivoBin) {
 
-        //Scanner entrada = new Scanner(System.in);  // somente para teste com paradas
+        Scanner entrada = new Scanner(System.in);  // somente para teste com paradas
 
         int nSetsCache1, bSizeCache1, associacaoCache1;
         int nSetsCache2, bSizeCache2, associacaoCache2;
@@ -97,15 +98,21 @@ public class Simulador {
         l1 = new Cache(nSetsCache1, bSizeCache1, associacaoCache1, "random", l2);
 
         int enderecoEmInteger;
+        Random gerar;
+        gerar = new Random();
+        
+        
         boolean missHit;
         ArquivoBinario arquivo = new ArquivoBinario(nomeArquivoBin);
         while (arquivo.temProximaPalavra32()) {
-
+            //int random =  500;//gerar.nextInt(1000 - 990);
             enderecoEmInteger = arquivo.getProximaPalavra32Bits();
-
-
-         // entrada.nextLine(); // ==> utilizado para parar o programa(apenas para teste)
+            //enderecoEmInteger+=random;
+            // System.out.println("Endereco: "+enderecoEmInteger);
+            //entrada.nextLine(); // ==> utilizado para parar o programa(apenas para teste)
+            System.out.println(this.l1.gerarRelatorio());
             missHit = l1.manipula(enderecoEmInteger);
+            //System.out.println("==============================");
         }
     }
 

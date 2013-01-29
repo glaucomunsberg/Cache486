@@ -1,4 +1,3 @@
-
 import java.util.Random;
 import java.util.LinkedList;
 
@@ -6,7 +5,7 @@ public class Cache {
 
     Celula celulas[];
     Cache nivelInferior;
-    private LinkedList<Integer> historicoCache = new LinkedList<Integer>();
+    private LinkedList<Integer> historicoCache = new LinkedList<Integer>(); // nao utilizado
     private int mBits_offset;
     private int mBits_indice;
     private int mBits_tag;
@@ -16,9 +15,10 @@ public class Cache {
     private int num_enderecos_processados;
     private int num_hits;
     private int numMissCompulsorio;
-    private int numMissCapacidade;
-    private int numMissConflito;
-    private int num_misses;
+    private int numMissCapacidade;   // nao utilizado
+    private int numMissConflito;        
+    int a, b;
+    private int numMisses;
     private String politicaAplicada;
     private Random gerar;
 
@@ -45,15 +45,14 @@ public class Cache {
             System.out.println("Error 5.100! Leia o 'README'" + e.toString());
 
         }
-        num_enderecos_processados = num_hits = num_misses = 0;
+        a = b = 0;
+        num_enderecos_processados = 0;
         mBits_offset = (int) (Math.log(bsize) / Math.log(2));
         mBits_indice = (int) (Math.log(nsets) / Math.log(2));
         mBits_tag = 32 - mBits_offset - mBits_indice;
         politicaAplicada = politica.toLowerCase();
-        gerar = new Random();
-        numMissCapacidade = 0;
-        // numMissConflito = 0; -- por enquanto não usa
-        numMissCompulsorio = 0;
+        gerar = new Random();        
+        num_hits = numMisses = numMissCompulsorio = numMissConflito = numMissCapacidade = 0;
         // System.out.println("mBits_offset: "+mBits_offset+" mBits_indice: "+mBits_indice+" mBits_tag: "+mBits_tag+" Política Usada:"+politicaAplicada);
     }
 
@@ -106,8 +105,8 @@ public class Cache {
      * @return boolean resultadoDaProcura
      */
     public boolean manipula(int enderecoRecebido) {
-
-        historicoCache.add(enderecoRecebido);
+     
+        historicoCache.add(enderecoRecebido); // nao esta sendo utilizado 
 
         this.prepararEndereco(enderecoRecebido);
         this.num_enderecos_processados++;
@@ -119,29 +118,19 @@ public class Cache {
          */
         if (!resultadoDaProcura) {
             if ("random".equals(politicaAplicada)) {
-
                 this.politicaRandomica();
-
             } else {
                 if ("lru".equals(politicaAplicada)) {
-
                     this.politicaLRU();
-
                 } else {
-
                     this.politicaRandomica();
-
                 }
             }
         }
-
-        if (resultadoDaProcura) {
-            this.num_hits += 1;
-        } else {
-            this.num_misses += 1;
-        }
-
-
+        
+        /*for(int i = 0; i < this.celulas.length; i++){
+            System.out.println(i +" "+celulas[i].getTag(0)+" "+celulas[i].getValidade(0));
+        }*/
         return resultadoDaProcura;
 
     }
@@ -163,14 +152,22 @@ public class Cache {
                 }
             }
         }
-
+        
         if (achouEndereco) {
+            num_hits++;
             return achouEndereco;
         } else {
+            // verifica se tem nivel inferior
             if (this.nivelInferior != null) {
+                // Entrou na L2
+                numMisses++;
                 achouEndereco = this.nivelInferior.manipula(endereco);
-            }
-
+                if (achouEndereco){
+                    this.politicaRandomica();
+                }    
+            } else {
+                numMisses++;
+            }   
         }
         return achouEndereco;
     }
@@ -188,8 +185,8 @@ public class Cache {
             this.indice = (endereco >> this.getmBits_offset());
             this.indice = (this.indice & aa.byteValue());
             this.tag = (this.endereco >> (byte) (this.mBits_offset + this.mBits_indice));
-            System.out.println("Numero: " + enderecoRecebido);
-            System.out.println("Endereço:" + Integer.toBinaryString(enderecoRecebido) + "\n  Indice:" + Integer.toBinaryString(indice) + "\n  Tag:" + Integer.toBinaryString(this.tag) + "\n");
+           // System.out.println("Numero: " + enderecoRecebido);
+           // System.out.println("Endereço:" + Integer.toBinaryString(enderecoRecebido) + "\n  Indice:" + Integer.toBinaryString(indice) + "\n  Tag:" + Integer.toBinaryString(this.tag) + "\n");
         } catch (Exception e) {
             System.out.println("Erro 5.101! Leia o 'README'");
         }
@@ -208,24 +205,12 @@ public class Cache {
             num_random_assoc = 0;
         }
 
-        try {
-            System.out.println(this.celulas.length);
-            /*for(int i = 0; i < this.celulas.length; i++){
-             System.out.println(i +" "+celulas[i].getTag(0)+" "+celulas[i].getValidade(0));
-            
-             }*/
-
-
-            if (!celulas[this.indice].getValidade(num_random_assoc)) {
+        try {            
+            if (!celulas[this.indice].getValidade(num_random_assoc)) {  
                 numMissCompulsorio++;
             } else {
-                if (historicoCache.contains(this.endereco)) {
-                    numMissCapacidade++;
-                } else {
-                    numMissConflito++;
-                }
+                numMissConflito++;
             }
-
             celulas[this.indice].setValido(num_random_assoc);
             celulas[this.indice].setTag(num_random_assoc, this.tag);
         } catch (Exception e) {
@@ -249,14 +234,30 @@ public class Cache {
             retorno = "\nL2\n" + this.nivelInferior.gerarRelatorio();
         }
 
-        double missRatio, hitRatio;
+        double missRatio, hitRatioL1, hitRatioL2;
         try {
-            missRatio = (num_misses * 100) / this.num_enderecos_processados;
-            hitRatio = (num_hits * 100) / this.num_enderecos_processados;
+            missRatio = (numMisses * 100) / this.num_enderecos_processados;
+            hitRatioL1 = (num_hits * 100) / this.num_enderecos_processados;
+            hitRatioL2 = (num_hits * 100) / this.num_enderecos_processados;
         } catch (Exception e) {
             missRatio = 0.0;
-            hitRatio = 0.0;
+            hitRatioL1 = 0.0;
+            hitRatioL2 = 0.0;
         }
-        return String.format("Total Endereços: %d\nTotal Hits: %d\nTotal Misses: %d\n - Miss Compulsório: %d\n - Miss Capacidade ou Conflito: %d \nHit Ratio: %.1f \nMiss Ratio: %.1f\n============" + retorno, this.num_enderecos_processados, this.num_hits, this.num_misses, this.numMissCompulsorio, this.numMissCapacidade, hitRatio, missRatio);
+        
+        return String.format("Total Endereços: %d\n"
+                + "Total Hits: %d\n"
+                + "Total Misses: %d\n "
+                + "- Miss Compulsório: %d\n "
+                + "- Miss Capacidade ou Conflito: %d\n"
+                + "Hit Ratio: %.1f \n"
+                + "Miss Ratio: %.1f\n"
+                + "============" + retorno, 
+                this.num_enderecos_processados,
+                this.num_hits, 
+                this.numMisses, 
+                this.numMissCompulsorio, 
+                this.numMissConflito, 
+                hitRatioL1, missRatio);
     }
 }
