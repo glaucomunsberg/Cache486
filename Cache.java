@@ -1,5 +1,5 @@
-import java.util.Random;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Cache {
 
@@ -17,7 +17,6 @@ public class Cache {
     private int numMissCompulsorio;
     private int numMissCapacidade;   // nao utilizado
     private int numMissConflito;        
-    int a, b;
     private int numMisses;
     private String politicaAplicada;
     private Random gerar;
@@ -45,7 +44,7 @@ public class Cache {
             System.out.println("Error 5.100! Leia o 'README'" + e.toString());
 
         }
-        a = b = 0;
+
         num_enderecos_processados = 0;
         mBits_offset = (int) (Math.log(bsize) / Math.log(2));
         mBits_indice = (int) (Math.log(nsets) / Math.log(2));

@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 
 public class Simulador {
 
-    Cache l1, l2;
+    private Cache l1, l2;
 
     public static void main(String[] args) {
 
@@ -21,7 +20,7 @@ public class Simulador {
 
             } catch (Exception e) {
                 System.out.println("Erro 5.000! Leia o 'README'");
-                e.printStackTrace();
+                System.exit(0);
             }
 
         } else {
@@ -32,8 +31,6 @@ public class Simulador {
     }
 
     public void iniciar(String cache1, String cache2, String nomeArquivoBin) {
-
-        Scanner entrada = new Scanner(System.in);  // somente para teste com paradas
 
         int nSetsCache1, bSizeCache1, associacaoCache1;
         int nSetsCache2, bSizeCache2, associacaoCache2;
@@ -71,7 +68,10 @@ public class Simulador {
                 associacaoCache1 = 1024;
             }
 
-
+            /**
+             * Recebe os parametros juntos na string cache1 =
+             * "<nsets_L2>:<bsize_L2>:<assoc_L2>"
+             */
             nSetsCache2 = Integer.parseInt(configCache2[0]);
             if (nSetsCache2 < 1) {
                 nSetsCache2 = 1;
@@ -98,21 +98,15 @@ public class Simulador {
         l1 = new Cache(nSetsCache1, bSizeCache1, associacaoCache1, "random", l2);
 
         int enderecoEmInteger;
-        Random gerar;
-        gerar = new Random();
-        
         
         boolean missHit;
         ArquivoBinario arquivo = new ArquivoBinario(nomeArquivoBin);
         while (arquivo.temProximaPalavra32()) {
-            //int random =  500;//gerar.nextInt(1000 - 990);
+            
             enderecoEmInteger = arquivo.getProximaPalavra32Bits();
-            //enderecoEmInteger+=random;
-            // System.out.println("Endereco: "+enderecoEmInteger);
-            //entrada.nextLine(); // ==> utilizado para parar o programa(apenas para teste)
             System.out.println(this.l1.gerarRelatorio());
             missHit = l1.manipula(enderecoEmInteger);
-            //System.out.println("==============================");
+            
         }
     }
 
@@ -175,10 +169,7 @@ class ArquivoBinario {
                         conteudoLido = conteudoLido | temp;
                     }
                     conteudoLido = (conteudoLido << 4);
-                    /*} else {
-                     temp = ~ temp;
-                     conteudoLido = conteudoLido | temp;
-                     }*/
+
                     voltaOQue = true;
                 } else {
                     terminouArquivo = true;

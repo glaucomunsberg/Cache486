@@ -6,22 +6,78 @@
 #   2.Implementação
 #   3.Execução
 #   4.Resultados e Conclusão
+#   5.Error and Helpers
+#   6.Bibliografia
 #
-# @autor André G. Peil  
-# @autor Glauco Roberto M. dos Santos
-# @github  git@github.com:glaucomunsberg/Cache486.git
-# @version 0.1
+#   @autor André G. Peil  
+#   @autor Glauco Roberto M. dos Santos
+#   @github  git@github.com:glaucomunsberg/Cache486.git
+#   @version 1.0
 #
 #####################################################################################################################
 #   1.Introduçao
 #####################################################################################################################
 #
+#       Projeto Cache486 se propõem a realizar o trabalho de AOCII, idealizado pelo Prof. Julio C. B. Mattos.
+#   O desenvolvimento foi realizado por Glauco Roberto M. Santos e André G. Peil. Tendo como objetivo criar um
+#   simulador de Cache que permita:
+#           ✓ Ser configurável para simular um número x de arquiteturas
+#           ✓ Políticas de cache configurável  
+#           ✓ Identificar o número de Hit
+#           ✓ Identificar o número de Miss
+#               Ser capaz de computar separadamente o Compulsory Miss, Conflict Miss e Capacity Miss
+#           ✓ Calcular o Mis Rate e Hit Rate
+#
+#   1.1 Por que Cache486
+#       O nomeCache468 nasce do processador 486, tal que foi o primeiro processador a trazer cache integrado.
+#   Eram 8 Kbytes, mas que eram capazes de entregar dados a cada ciclo do processador. Como os fabricantes
+#   continuaram incluindo cache na placa mãe, um pouco mais lentos, mas em maior quantidade, surgiu também a
+#   distinção entre o cache L1 e o L2.
 #
 #####################################################################################################################
 #   2.Implementação
 #####################################################################################################################
 #
+#       Na implementação do Projeto Cache486 optou-se por utilizar a linguagem Java, pois se mostrou mais eficiênte
+#   para o que esperava-se do trabalho: Um trabalho de fácil leitura, documentação e que atendesse os paradigmas da
+#   orientação a objeto.
+#       Trabalho este realizado por Glauco e André Peil utilizando o GitHub como versionador e forma de manter o código
+#   conciso e para fácil acesso ao público.
 #
+#   2.1 Classes do Projeto
+#       Foram modeladas classes que ao mesmo tempo podesse ser autoexplicativas e que possem o mais próximas possíveis
+#   das entidades envolvidas em uma cache simples. Fica assim o trabalho resumido a classesSimulador, Cache, Celula.
+#   ArquivoBinario.
+#       Vejamos um pouco sobre cada uma delas abaixo:
+#           -> Simulador.java
+#               A classe simulador está exclusivamente ligada ao processo de execução da chache, ela exerce a mesma
+#               função que teria o processador: A de enviar um requerimento de endereço;
+#           -> ArquivoBinario
+#               Essa classe está implementada juntamente a classe Simulador por se julgar mais adequada. Essa tem a
+#               função única de fazer a leitura do arquivo e permitir que tenha mais um modo de obter os endereços
+#               armazenados no arquivo binário;
+#           -> Cache.java
+#               Funciona com as mesmas funções que se espera de uma cache simples. Faz a verificação do endereço e
+#               se não encontra-o, insere-o na cache aplicando a política pré-selecionada. Também gerando um relatório
+#               de misses e hits de cada nível usado;
+#           -> Celula.java
+#               Cada nível da cache pode ser vista como uma tabela, aqui chamamos de celulas cada linha dessa cache      
+#               e cada uma das (celulas) linhas da cache possúi o seu número de associatividade. Optou-se por usar
+#               a classe me vez de uma matriz direta, pois com essa classe pode-se extrair informações e conter operações
+#               básicas;
+#
+#   2.2 Arquivos Binários
+#       Note que os arquivos lidos pelo Cache486 são unicamente arquivos com conjuntos de palavras de 8bytes, ou seja,
+#   palavras de 32bits ou um Inteiro, como queira. Entretanto é interessante lembrar, que a arquitetura armazena na
+#   forma de Big Endian onde o bit mais significativo é o primeiro a ser armazenado. Não há qualquer outra informação
+#   armazenada além desse conjuntos de 32bits de compõe os endereços.
+#
+#   2.3 Ausência de dados
+#       É importante frizar que a Cache486 não está preocupada em armazenar dado algum, que estaria armazenado no
+#   endereço processado, pois essa informação seria importante para o processador e uma cache está preocupada apenas
+#   em saber se tem ela ou não. Por isso a cache está isenta de armazenamento de dados, para maiores informações leia
+#   a bibligrafia abaixo citada.
+#       
 #####################################################################################################################
 #   3.Execução
 #####################################################################################################################
@@ -31,13 +87,13 @@
 #   Podendo inclusive baixar e executar os arquivos da pasta 'exemplosDeSimulacao'.
 #
 #   3.1 Configuração Mínima
-#       * Java 6
-#       * 256 RAM
-#       * Arquivos Mínima
+#       ✓ Java 6
+#       ✓ 64 RAM
+#       ✓ Arquivos Mínima
 #            * Simulador.java
 #            * Cache.java
 #            * Celula.java
-#            * exemploBinario*.dat
+#            * exemplo*.bin
 #
 #      3.1.2 Compilar
 #           Para a compilação, se opta por executar diretamente a compilação da classe Simulador que resolve as
@@ -58,10 +114,11 @@
 #           Antes de simular no terminal, deve-se passar alguns parametros (3.1.3), entenda cada um deles antes de
 #       Simular:
 #
-#               $ java Simulador "nSets1:bSize1:associatividade1" "nSetsCache2:bSize2:associatividade2" "nomeArquivoBin"
+#               $ java Simulador "nSets1:bSize1:associatividade1" "nSetsCache2:bSize2:associatividade2" "arquivoExemplo.bin"
+#
 #     3.1.5 Exemplo:
 #
-#           Abaixo está os comandos para uma cache de 1024 índices, com 4bytes (32bits) de tamanho da palavra e
+#           Abaixo está os comandos para uma cache de 1024 índices, com 4bytes (32bits) de tamanho de endereço e
 #       uma associtividade 1 (Mapeamento Direto).
 #
 #               $ java Simulador "1024:4:1" "1024:4:1" "exemploBinario.dat"
@@ -70,11 +127,8 @@
 # 4.Resultados e Conclusão
 #####################################################################################################################
 #
-#
-#
-#
-#
-#
+#       Os resultados obtidos com os arquivos padrões, bateram com o teste de mesa e presume-se que está dentro do
+#   esperado.
 #
 #####################################################################################################################
 # 5.Error and Helpers
@@ -115,6 +169,12 @@
 #           O programa foi projeto para ler apenas arquivos binários com tuplas de 32bits, ou seja, deve haver
 #           (n*32)bits dentro do arquivo.
 #
+#####################################################################################################################
+# 6.Bibliografia
+#####################################################################################################################
 #
+#   PATTERSON, David A.; HENESSY, John L. Organização e Projeto de Computadores: a interface hardware/software. 2a.ed.
+#       Rio de Janeiro: Campus, 2005.
+#   DEITEL, H. M. & DEITEL, P. J. Java: como programar. 6. ed. Porto Alegre: Bookman, 2005. RODRIGUES FILHO, R.
 #
 #####################################################################################################################
