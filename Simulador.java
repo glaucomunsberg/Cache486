@@ -104,7 +104,7 @@ public class Simulador {
         while (arquivo.temProximaPalavra32()) {
             
             enderecoEmInteger = arquivo.getProximaPalavra32Bits();
-            System.out.println(this.l1.gerarRelatorio());
+            
             missHit = l1.manipula(enderecoEmInteger);
             
         }
