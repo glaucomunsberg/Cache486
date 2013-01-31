@@ -45,8 +45,8 @@
 #   conciso e para fácil acesso ao público.
 #
 #   2.1 Classes do Projeto
-#       Foram modeladas classes que ao mesmo tempo podesse ser autoexplicativas e que possem o mais próximas possíveis
-#   das entidades envolvidas em uma cache simples. Fica assim o trabalho resumido a classesSimulador, Cache, Celula.
+#       Foram modeladas classes que ao mesmo tempo podesse ser autoexplicativas e mais próximas possíveis
+#   das entidades envolvidas em uma cache simples. Fica assim o trabalho resumido a classes Simulador, Cache, Celula.
 #   ArquivoBinario.
 #       Vejamos um pouco sobre cada uma delas abaixo:
 #           -> Simulador.java
